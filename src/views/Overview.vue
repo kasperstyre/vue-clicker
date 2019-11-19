@@ -1,5 +1,5 @@
 <template>
-    <div class="md-layout">
+    <div class="md-layout overview-container">
         <clicker />
         <powerup-list />
     </div>
@@ -9,8 +9,6 @@
     
 </style>
 <script lang="ts">
-import '@/styles/overview.scss';
-
 import Clicker from '@/components/Clicker.vue';
 import PowerupList from '@/components/PowerupList.vue';
 
