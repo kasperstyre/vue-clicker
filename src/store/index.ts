@@ -1,20 +1,37 @@
 import Vue from "vue";
-import Vuex from "vuex";
+import Vuex, { StoreOptions, GetterTree } from "vuex";
+import { RootState } from './types';
+
+import { Powerup } from '@/classes/Powerup.ts';
+import { PowerupCount } from '@/classes/PowerupCount.ts';
 
 Vue.use(Vuex);
 
-export default new Vuex.Store({
-  state: {
-    cookies: 0,
-  },
-  mutations: {
-    addCookie(state) {
-        state.cookies += 1;
+const storeOptions = {
+    state: {
+      cookies: 0,
+      powerupCounts: Array<PowerupCount>()
+    },
+    mutations: {
+      addCookie(state: RootState) {
+          state.cookies++;
+      },
+      addPowerup(state: RootState, powerup: Powerup) {
+          const existingPowerup = state.powerupCounts.find(x => x.id === powerup.id);
+  
+          if (existingPowerup) {
+              existingPowerup.count++;
+          } else {
+              state.powerupCounts.push(new PowerupCount(powerup.id, 1));
+          }
+      }
+    },
+    getters: {
+      cookies: (state: RootState) => state.cookies,
+      powerupCounts: (state: RootState) => state.powerupCounts
     }
-  },
-  getters: {
-    cookies: state => state.cookies
-  },
-  actions: {},
-  modules: {}
-});
+  };
+
+const store = new Vuex.Store<RootState>(storeOptions);
+
+export default store;

@@ -5,11 +5,12 @@
     </div>
 </template>
 <script lang="ts">
-export default {
-    methods: {
-        vueClicked() {
-            this.$store.commit('addCookie');
-        }
+import { Component, Vue } from 'vue-property-decorator';
+
+@Component
+export default class Clicker extends Vue {
+    vueClicked() {
+        this.$store.commit('addCookie');
     }
 }
 </script>

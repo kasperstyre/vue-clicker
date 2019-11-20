@@ -1,48 +1,32 @@
 <template>
     <div class="md-layout-item md-medium-size-66 md-small-size-100 powerup-container">
         <md-list class="md-double-line">
-            <md-list-item
+            <powerup-component
                 v-for="powerup in powerups"
                 v-bind="powerup"
                 :key="powerup.id"
             >
-                <div class="md-list-item-text">
-                    <span>{{ powerup.name }}</span>
-                    <span>{{ powerup.basePrice }}</span>
-                </div>
-            </md-list-item>
+            </powerup-component>
         </md-list>
     </div>
 </template>
 <script lang="ts">
+import { Powerup } from '@/classes/Powerup.ts';
 
-class Powerup {
-    id: number;
-    name: string;
-    basePrice: number;
-    multiplier: number;
+import PowerupComponent from '@/components/Powerup.vue';
 
-    constructor(id:number, name: string, basePrice: number, multiplier: number) {
-        this.id = id;
-        this.name = name;
-        this.basePrice = basePrice;
-        this.multiplier = multiplier;
+import { Component, Vue } from 'vue-property-decorator';
+
+@Component({
+    components: {
+        PowerupComponent
     }
-
-}
-
-export default {
-    data() {
-        return {
-            powerups: [
-                new Powerup(1, "Cursor", 15, 1.15),
-                new Powerup(2, "Script Kiddie", 100, 1.20),
-                new Powerup(3, "Hobby coder", 1000, 1.25),
-            ]
-        };
-    },
-    computed: {
-
-    }
+})
+export default class PowerupList extends Vue {
+    powerups: Powerup[] = [
+        new Powerup(1, "Cursor", 15, 1.15),
+        new Powerup(2, "Script Kiddie", 100, 1.20),
+        new Powerup(3, "Hobby coder", 1000, 1.25),
+    ];
 }
 </script>
