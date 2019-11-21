@@ -20,15 +20,37 @@ const storeOptions = {
           const existingPowerup = state.powerupCounts.find(x => x.id === powerup.id);
   
           if (existingPowerup) {
+              const cookiePrice = Math.floor(powerup.basePrice * (existingPowerup.count * powerup.multiplier));
+
+              state.cookies -= cookiePrice;
               existingPowerup.count++;
           } else {
-              state.powerupCounts.push(new PowerupCount(powerup.id, 1));
+              state.cookies -= powerup.basePrice;
+              state.powerupCounts.push(new PowerupCount(powerup.id, 1, powerup.cookiesPerSecond));
           }
+      },
+      addPowerupCookies(state: RootState) {
+          let totalCookies = 0;
+
+          state.powerupCounts.forEach((powerupCount: PowerupCount) => {
+            totalCookies += (powerupCount.count * powerupCount.cookiesPerSecond);
+          });
+
+          state.cookies += totalCookies;
       }
     },
     getters: {
       cookies: (state: RootState) => state.cookies,
-      powerupCounts: (state: RootState) => state.powerupCounts
+      powerupCounts: (state: RootState) => state.powerupCounts,
+      totalCps: (state: RootState) => {
+          let totalCps = 0;
+
+          state.powerupCounts.forEach((powerupCount: PowerupCount) => {
+              totalCps += powerupCount.cookiesPerSecond * powerupCount.count;
+          });
+
+          return totalCps;
+      }
     }
   };
 
